@@ -32,7 +32,7 @@ func (q Quote) String() string {
 
 // CreateQuoteFromCount takes a number of items and returns a Price struct.
 func CreateQuoteFromCount(count int) Quote {
-	return CreateQuoteFromFloat(8.99)
+	return CreateQuoteFromFloat(0.99 * float64(count) + 7.99)
 }
 
 // CreateQuoteFromFloat takes a price represented as a float and creates a Price struct.
