@@ -9,7 +9,7 @@
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -75,6 +75,13 @@ class RecommendationService(demo_pb2_grpc.RecommendationServiceServicer):
         filtered_products = list(set(product_ids)-set(request.product_ids))
         num_products = len(filtered_products)
         num_return = min(max_responses, num_products)
+        
+        # Handle empty filtered_products case
+        if num_products == 0:
+            logger.info("[Recv ListRecommendations] No filtered products available")
+            response = demo_pb2.ListRecommendationsResponse()
+            return response
+        
         # sample list of indicies to return
         indices = random.sample(range(num_products), num_return)
         # fetch product ids from indices
