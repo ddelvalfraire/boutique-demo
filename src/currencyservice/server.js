@@ -140,6 +140,20 @@ function convert (call, callback) {
     _getCurrencyData((data) => {
       const request = call.request;
 
+      // Validate from currency code
+      if (!data[request.from.currency_code]) {
+        logger.error(`Invalid from currency code: ${request.from.currency_code}`);
+        callback('Invalid from currency code');
+        return;
+      }
+      
+      // Validate to currency code
+      if (!data[request.to_code]) {
+        logger.error(`Invalid to currency code: ${request.to_code}`);
+        callback('Invalid to currency code');
+        return;
+      }
+
       // Convert: from_currency --> EUR
       const from = request.from;
       const euros = _carry({
