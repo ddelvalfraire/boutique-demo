@@ -40,6 +40,7 @@ from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExport
 from logger import getJSONLogger
 logger = getJSONLogger('recommendationservice-server')
 
+
 def initStackdriverProfiling():
   project_id = None
   try:
@@ -75,6 +76,11 @@ class RecommendationService(demo_pb2_grpc.RecommendationServiceServicer):
         filtered_products = list(set(product_ids)-set(request.product_ids))
         num_products = len(filtered_products)
         num_return = min(max_responses, num_products)
+        # If there are no products to recommend, return an empty list
+        if num_products == 0:
+            logger.info("[Recv ListRecommendations] No products available for recommendation")
+            response = demo_pb2.ListRecommendationsResponse()
+            return response
         # sample list of indicies to return
         indices = random.sample(range(num_products), num_return)
         # fetch product ids from indices
