@@ -32,7 +32,12 @@ func (q Quote) String() string {
 
 // CreateQuoteFromCount takes a number of items and returns a Price struct.
 func CreateQuoteFromCount(count int) Quote {
-	return CreateQuoteFromFloat(8.99)
+	// Fixed: Use item count to calculate shipping cost
+	// Base cost $2.99 + $0.99 per item
+	base := 2.99
+	perItem := 0.99
+	value := base + float64(count)*perItem
+	return CreateQuoteFromFloat(value)
 }
 
 // CreateQuoteFromFloat takes a price represented as a float and creates a Price struct.
