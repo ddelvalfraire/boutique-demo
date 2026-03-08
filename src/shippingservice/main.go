@@ -121,7 +121,7 @@ func (s *server) GetQuote(ctx context.Context, in *pb.GetQuoteRequest) (*pb.GetQ
 	defer log.Info("[GetQuote] completed request")
 
 	// 1. Generate a quote based on the total number of items to be shipped.
-	quote := CreateQuoteFromCount(0)
+	quote := CreateQuoteFromCount(len(in.GetRequestItems()))
 
 	// 2. Generate a response.
 	return &pb.GetQuoteResponse{
